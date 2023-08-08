@@ -11,7 +11,7 @@ public interface GenreService {
      Set<GenreEntity> getAllGenres();
      GenreEntity getGenreById(Long id);
      void saveGenre(GenreEntity genreEntity);
-     GenreEntity updateGenre(GenreEntity genreEntity,Long id);
+     void updateGenre(GenreEntity genreEntity,Long id);
      void deleteGenreById(Long id);
 
 //    Searching Methods*******************

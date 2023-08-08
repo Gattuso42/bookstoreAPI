@@ -24,8 +24,8 @@ public class AuthorEntity {
     private Long id;
     @Column(name = "author_name")
     private String name;
-    @Column(name = "email")
-    private String email;
+    @Column(name = "country")
+    private String country;
 
     @JsonIgnore
     @OneToMany(mappedBy = "authorEntity",cascade = CascadeType.ALL,orphanRemoval = true)
