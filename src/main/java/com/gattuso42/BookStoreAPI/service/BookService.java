@@ -11,7 +11,7 @@ public interface BookService {
      Set<BookEntity> getAllBooks();
      BookEntity getBookById(Long id);
      void saveBook(BookEntity bookEntity,String authorName,String country,Set<String> genreName);
-     void updateBook(BookEntity bookEntity,Long id);
+     void updateBook(BookEntity bookEntity,String authorName,String country,Set<String> genreName,Long id);
      void deleteBookById(Long id);
 
 //    Searching Methods*****************

@@ -45,7 +45,7 @@ public class AuthorController {
 //    Search Implementations********************************
 
 //    Search author by name
-    @GetMapping("/search")
+    @GetMapping("/search/name")
     ResponseEntity<Set<AuthorEntity>>getAuthorByName(@RequestParam String name){
         return new ResponseEntity<>(HttpStatus.OK);
     }

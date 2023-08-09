@@ -53,6 +53,7 @@ public class BookServiceImpl implements BookService{
         if(listAuthorsData.isEmpty()){
             AuthorEntity newAuthor = new AuthorEntity();
             newAuthor.setName(authorName);
+            newAuthor.setCountry(country);
             authorRepository.save(newAuthor);
             bookEntity.setAuthorEntity(newAuthor);
         }
@@ -63,17 +64,42 @@ public class BookServiceImpl implements BookService{
     }
 
     @Override
-    public void updateBook(BookEntity bookEntity, Long id) {
-        BookEntity upgradedBook = new BookEntity();
+    public void updateBook(BookEntity bookEntity,String authorName,String country,Set<String> genreName, Long id) {
         Optional<BookEntity> auxData = bookRepository.findBookEntityById(id);
+//        Process similar to save
         if(auxData.isEmpty()) throw new EntityNotFoundException("The Book with this id is not found");
         else {
+//          Verifying if the Genres
+            for(String aux:genreName){
+                Optional<GenreEntity>genreAuxData = genreRepository.findByNameIgnoreCase(aux);
+                if(genreAuxData.isEmpty()){
+                    GenreEntity newGenre = new GenreEntity();
+                    newGenre.setName(aux);
+                    genreRepository.save(newGenre);
+                    bookEntity.getGenreEntities().add(newGenre);
+                }
+                else{
+                    bookEntity.getGenreEntities().add(genreAuxData.get());
+                }
+            }
+//            Verifying the Authors
+            List<AuthorEntity>listAuthorsData = authorRepository.findByNameIgnoreCase(authorName);
+            if(listAuthorsData.isEmpty()){
+                AuthorEntity newAuthor = new AuthorEntity();
+                newAuthor.setName(authorName);
+                newAuthor.setCountry(country);
+                authorRepository.save(newAuthor);
+                bookEntity.setAuthorEntity(newAuthor);
+            }
+            else{
+                bookEntity.setAuthorEntity(listAuthorsData.get(0));
+            }
+//            Update Process
             auxData.get().setTitle(bookEntity.getTitle());
             auxData.get().setDescription(bookEntity.getDescription());
             auxData.get().setISBN(bookEntity.getISBN());
             auxData.get().setPrice(bookEntity.getPrice());
             auxData.get().setQuantityInStock(bookEntity.getQuantityInStock());
-//            Different Process
             auxData.get().setAuthorEntity(bookEntity.getAuthorEntity());
             auxData.get().setGenreEntities(bookEntity.getGenreEntities());
         }

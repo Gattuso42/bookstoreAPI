@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDate;
 import java.util.Set;
@@ -30,8 +31,9 @@ public class BookEntity {
     @Column(name = "isbn")
     private String ISBN;
     @Column(name = "quantity_in_stock")
-    private int QuantityInStock;
+    private int quantityInStock;
     @Column(name = "published_day")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate publishedDay;
 
     @ManyToOne(optional = false)

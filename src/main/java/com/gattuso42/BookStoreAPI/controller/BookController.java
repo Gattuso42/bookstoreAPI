@@ -33,7 +33,7 @@ public class BookController {
 
 //    Save a Book
     @PostMapping()
-    ResponseEntity<BookEntity>saveBook(@RequestBody BookEntity bookEntity,String authorName,String authorCountry,Set<String> genreName){
+    ResponseEntity<BookEntity>saveBook(@RequestBody BookEntity bookEntity,@RequestParam String authorName,@RequestParam String authorCountry,@RequestParam Set<String> genreName){
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 

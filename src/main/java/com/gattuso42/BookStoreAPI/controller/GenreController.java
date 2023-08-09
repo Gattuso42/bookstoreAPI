@@ -46,7 +46,7 @@ public class GenreController {
 //    Search Implementations***************************
 
 //    Search Genre by name
-    @GetMapping("/search")
+    @GetMapping("/search/name")
     ResponseEntity<Set<GenreEntity>>getGenreByName(@RequestParam String name){
         return new ResponseEntity<>(HttpStatus.OK);
     }
