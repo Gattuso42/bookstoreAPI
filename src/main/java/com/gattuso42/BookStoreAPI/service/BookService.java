@@ -8,7 +8,7 @@ import java.util.Set;
 
 public interface BookService {
 
-     Set<BookEntity> getAllBooks();
+     List<BookEntity> getAllBooks();
      BookEntity getBookById(Long id);
      void saveBook(BookEntity bookEntity,String authorName,String country,Set<String> genreName);
      void updateBook(BookEntity bookEntity,String authorName,String country,Set<String> genreName,Long id);

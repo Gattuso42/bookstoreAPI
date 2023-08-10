@@ -11,6 +11,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Locale;
 import java.util.Optional;
 import java.util.Set;
 
@@ -18,13 +19,13 @@ import java.util.Set;
 @AllArgsConstructor
 public class BookServiceImpl implements BookService{
 
-    BookRepository bookRepository;
-    AuthorRepository authorRepository;
-    GenreRepository genreRepository;
+   private BookRepository bookRepository;
+   private AuthorRepository authorRepository;
+   private GenreRepository genreRepository;
 
     @Override
-    public Set<BookEntity> getAllBooks() {
-        return (Set<BookEntity>) bookRepository.findAll();
+    public List<BookEntity> getAllBooks() {
+        return (List<BookEntity>) bookRepository.findAll();
     }
 
     @Override
@@ -102,6 +103,8 @@ public class BookServiceImpl implements BookService{
             auxData.get().setQuantityInStock(bookEntity.getQuantityInStock());
             auxData.get().setAuthorEntity(bookEntity.getAuthorEntity());
             auxData.get().setGenreEntities(bookEntity.getGenreEntities());
+
+            bookRepository.save(auxData.get());
         }
 
     }

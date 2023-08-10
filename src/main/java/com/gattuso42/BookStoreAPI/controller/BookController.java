@@ -17,35 +17,38 @@ import java.util.Set;
 @AllArgsConstructor
 public class BookController {
 
-    BookService bookService;
+    private BookService bookService;
 
 //  Get all the books
     @GetMapping("/all")
-    ResponseEntity<Set<BookEntity>>getAllBooks(){
-        return new ResponseEntity<>(HttpStatus.OK);
+    ResponseEntity<List<BookEntity>>getAllBooks(){
+        return new ResponseEntity<>(bookService.getAllBooks(),HttpStatus.OK);
     }
 
 //    Get books by id
     @GetMapping("/{id}")
     ResponseEntity<BookEntity>getBookById(@PathVariable Long id){
-        return new ResponseEntity<>(HttpStatus.OK);
+        return new ResponseEntity<>(bookService.getBookById(id),HttpStatus.OK);
     }
 
 //    Save a Book
     @PostMapping()
     ResponseEntity<BookEntity>saveBook(@RequestBody BookEntity bookEntity,@RequestParam String authorName,@RequestParam String authorCountry,@RequestParam Set<String> genreName){
+        bookService.saveBook(bookEntity,authorName,authorCountry,genreName);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
 //    Upgrade a Book
     @PutMapping("/{id}")
-    ResponseEntity<BookEntity>upgradeBook(@RequestBody BookEntity bookEntity,@PathVariable Long id){
+    ResponseEntity<BookEntity>upgradeBook(@RequestBody BookEntity bookEntity,@PathVariable Long id,@RequestParam String authorName,@RequestParam String authorCountry,@RequestParam Set<String> genreName){
+        bookService.updateBook(bookEntity,authorName,authorCountry,genreName,id);
         return new ResponseEntity<>(HttpStatus.ACCEPTED);
     }
 
 //    Delete a Book
     @DeleteMapping("/{id}")
     ResponseEntity<BookEntity>deleteBookById(@PathVariable Long id){
+        bookService.deleteBookById(id);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
@@ -55,7 +58,7 @@ public class BookController {
 //    Search books by title
     @GetMapping("search/title")
     ResponseEntity<List<BookEntity>>getBookByTitle(@RequestParam String title){
-        return new ResponseEntity<>(HttpStatus.OK);
+        return new ResponseEntity<>(bookService.getBookByTitle(title),HttpStatus.OK);
     }
 
 }

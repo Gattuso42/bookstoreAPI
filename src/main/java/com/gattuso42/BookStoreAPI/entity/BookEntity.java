@@ -9,6 +9,7 @@ import lombok.Setter;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDate;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -40,12 +41,12 @@ public class BookEntity {
     @JoinColumn(name = "author_fk_id",referencedColumnName = "author_pk_id")
     private AuthorEntity authorEntity;
 
-    @JsonIgnore
+//    @JsonIgnore
     @ManyToMany
     @JoinTable(
             name = "book_genre",
             joinColumns = @JoinColumn(name = "book_fk_id",referencedColumnName = "book_pk_id" ),
             inverseJoinColumns = @JoinColumn(name = "genre_fk_id" ,referencedColumnName = "genre_pk_id")
     )
-    Set<GenreEntity> genreEntities;
+    Set<GenreEntity> genreEntities = new HashSet<>();
 }
