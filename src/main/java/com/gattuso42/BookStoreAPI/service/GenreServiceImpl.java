@@ -7,6 +7,7 @@ import jakarta.persistence.EntityNotFoundException;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
@@ -17,8 +18,8 @@ public class GenreServiceImpl implements GenreService {
 
     GenreRepository genreRepository;
     @Override
-    public Set<GenreEntity> getAllGenres() {
-        return (Set<GenreEntity>) genreRepository.findAll();
+    public List<GenreEntity> getAllGenres() {
+        return (List<GenreEntity>)genreRepository.findAll();
     }
 
     @Override
@@ -52,11 +53,15 @@ public class GenreServiceImpl implements GenreService {
 
     }
 
+//   Searching Methods*******************
+
+//    Search Genre by name
     @Override
     public Set<GenreEntity> getGenreByName(String name) {
         return genreRepository.findByNameContaining(name);
     }
 
+//    Search Books by Genre
     @Override
     public Set<BookEntity> getBooksByGenre(Long id) {
         Optional<GenreEntity>auxData = genreRepository.findGenreEntityById(id);

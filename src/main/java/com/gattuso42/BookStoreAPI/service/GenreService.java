@@ -3,12 +3,13 @@ package com.gattuso42.BookStoreAPI.service;
 import com.gattuso42.BookStoreAPI.entity.BookEntity;
 import com.gattuso42.BookStoreAPI.entity.GenreEntity;
 
+import java.util.List;
 import java.util.Set;
 
 public interface GenreService {
 
 
-     Set<GenreEntity> getAllGenres();
+     List<GenreEntity> getAllGenres();
      GenreEntity getGenreById(Long id);
      void saveGenre(GenreEntity genreEntity);
      void updateGenre(GenreEntity genreEntity,Long id);
