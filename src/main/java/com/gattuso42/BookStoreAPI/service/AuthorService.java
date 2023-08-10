@@ -8,7 +8,7 @@ import java.util.Set;
 
 public interface AuthorService {
 
-     Set<AuthorEntity>getAllAuthor();
+     List<AuthorEntity>getAllAuthor();
      AuthorEntity getAuthorById(Long id);
      void saveAuthor(AuthorEntity authorEntity);
      void updateAuthor(AuthorEntity authorEntity,Long id);

@@ -17,8 +17,8 @@ public class AuthorServiceImpl implements AuthorService{
 
     AuthorRepository authorRepository;
     @Override
-    public Set<AuthorEntity> getAllAuthor() {
-        return (Set<AuthorEntity>) authorRepository.findAll();
+    public List<AuthorEntity> getAllAuthor() {
+        return (List<AuthorEntity>)authorRepository.findAll();
     }
 
     @Override
@@ -41,6 +41,7 @@ public class AuthorServiceImpl implements AuthorService{
             AuthorEntity authorData = auxData.get();
             authorData.setName(authorEntity.getName());
             authorData.setCountry(authorEntity.getCountry());
+            authorRepository.save(authorData);
         }
     }
 
