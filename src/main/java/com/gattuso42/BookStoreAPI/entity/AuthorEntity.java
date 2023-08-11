@@ -3,6 +3,10 @@ package com.gattuso42.BookStoreAPI.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -22,8 +26,18 @@ public class AuthorEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "author_pk_id")
     private Long id;
+
+    @NotNull(message = "Author name must not be blank")
+    @NotBlank(message = "Author name must not be blank")
+    @Size(max = 35,message = "Name must be up to 35 characters ")
+    @Pattern(regexp = "^[a-zA-Z0]*$",message = "Only letters are allowed")
     @Column(name = "author_name")
     private String name;
+
+    @NotNull(message = "Country must not be blank")
+    @NotBlank(message = "Country must not be blank")
+    @Size(max = 35,message = "Country must be up to 35 characters ")
+    @Pattern(regexp = "^[a-zA-Z0]*$",message = "Only letters are allowed")
     @Column(name = "country")
     private String country;
 

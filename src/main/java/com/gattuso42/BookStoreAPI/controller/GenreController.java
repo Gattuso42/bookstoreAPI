@@ -2,8 +2,8 @@ package com.gattuso42.BookStoreAPI.controller;
 
 import com.gattuso42.BookStoreAPI.entity.BookEntity;
 import com.gattuso42.BookStoreAPI.entity.GenreEntity;
-import com.gattuso42.BookStoreAPI.repository.GenreRepository;
 import com.gattuso42.BookStoreAPI.service.GenreService;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -33,7 +33,7 @@ public class GenreController {
 
 //    Save Genre
     @PostMapping()
-    ResponseEntity<GenreEntity> saveGenre(@RequestBody GenreEntity genreEntity){
+    ResponseEntity<GenreEntity> saveGenre(@Valid @RequestBody GenreEntity genreEntity){
         genreService.saveGenre(genreEntity);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
@@ -41,7 +41,7 @@ public class GenreController {
 
 //    Upgrade Genre
     @PutMapping("/{id}")
-    ResponseEntity<GenreEntity>upgradeGenre(@RequestBody GenreEntity genreEntity,@PathVariable Long id){
+    ResponseEntity<GenreEntity>upgradeGenre(@Valid @RequestBody GenreEntity genreEntity,@PathVariable Long id){
         genreService.updateGenre(genreEntity,id);
         return new ResponseEntity<>(HttpStatus.ACCEPTED);
     }
@@ -57,7 +57,7 @@ public class GenreController {
 
 //    Search Genre by name
     @GetMapping("/search/name")
-    ResponseEntity<Set<GenreEntity>>getGenreByName(@RequestParam String name){
+    ResponseEntity<Set<GenreEntity>>getGenreByName(@Valid @RequestParam String name){
         return new ResponseEntity<>(genreService.getGenreByName(name),HttpStatus.OK);
     }
 

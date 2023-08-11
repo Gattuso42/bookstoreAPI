@@ -2,8 +2,8 @@ package com.gattuso42.BookStoreAPI.controller;
 
 
 import com.gattuso42.BookStoreAPI.entity.BookEntity;
-import com.gattuso42.BookStoreAPI.entity.GenreEntity;
 import com.gattuso42.BookStoreAPI.service.BookService;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -33,7 +33,7 @@ public class BookController {
 
 //    Save a Book
     @PostMapping()
-    ResponseEntity<BookEntity>saveBook(@RequestBody BookEntity bookEntity,@RequestParam String authorName,@RequestParam String authorCountry,@RequestParam Set<String> genreName){
+    ResponseEntity<BookEntity>saveBook(@Valid @RequestBody BookEntity bookEntity,@Valid @RequestParam String authorName,@Valid @RequestParam String authorCountry,@Valid @RequestParam Set<String> genreName){
         bookService.saveBook(bookEntity,authorName,authorCountry,genreName);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
@@ -57,7 +57,7 @@ public class BookController {
 
 //    Search books by title
     @GetMapping("search/title")
-    ResponseEntity<List<BookEntity>>getBookByTitle(@RequestParam String title){
+    ResponseEntity<List<BookEntity>>getBookByTitle(@Valid @RequestParam String title){
         return new ResponseEntity<>(bookService.getBookByTitle(title),HttpStatus.OK);
     }
 

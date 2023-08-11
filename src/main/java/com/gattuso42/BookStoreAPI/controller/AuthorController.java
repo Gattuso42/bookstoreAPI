@@ -3,6 +3,7 @@ package com.gattuso42.BookStoreAPI.controller;
 import com.gattuso42.BookStoreAPI.entity.AuthorEntity;
 import com.gattuso42.BookStoreAPI.entity.BookEntity;
 import com.gattuso42.BookStoreAPI.service.AuthorService;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -32,14 +33,14 @@ public class AuthorController {
 
 //    Save author
     @PostMapping()
-    ResponseEntity<AuthorEntity>saveAuthor(@RequestBody AuthorEntity authorEntity){
+    ResponseEntity<AuthorEntity>saveAuthor(@Valid @RequestBody AuthorEntity authorEntity){
         authorService.saveAuthor(authorEntity);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
 //    Upgrade author
     @PutMapping("/{id}")
-    ResponseEntity<AuthorEntity>updateAuthor(@RequestBody AuthorEntity authorEntity,@PathVariable Long id){
+    ResponseEntity<AuthorEntity>updateAuthor(@Valid @RequestBody AuthorEntity authorEntity,@PathVariable Long id){
         authorService.updateAuthor(authorEntity,id);
         return new ResponseEntity<>(HttpStatus.ACCEPTED);
     }
@@ -55,13 +56,13 @@ public class AuthorController {
 
 //    Search author by name
     @GetMapping("/search/name")
-    ResponseEntity<List<AuthorEntity>>getAuthorByName(@RequestParam String name){
+    ResponseEntity<List<AuthorEntity>>getAuthorByName(@Valid @RequestParam String name){
         return new ResponseEntity<>(authorService.getAuthorByName(name),HttpStatus.OK);
     }
 
 //    Get all the books by author
     @GetMapping("/search-books-by-author/{id}")
-    ResponseEntity<Set<BookEntity>>getBooksByAuthor(@PathVariable Long id){
+    ResponseEntity<Set<BookEntity>>getBooksByAuthor( @PathVariable Long id){
         return new ResponseEntity<>(authorService.getBooksByAuthor(id),HttpStatus.OK);
     }
 

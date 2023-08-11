@@ -11,7 +11,6 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Locale;
 import java.util.Optional;
 import java.util.Set;
 
@@ -98,7 +97,7 @@ public class BookServiceImpl implements BookService{
 //            Update Process
             auxData.get().setTitle(bookEntity.getTitle());
             auxData.get().setDescription(bookEntity.getDescription());
-            auxData.get().setISBN(bookEntity.getISBN());
+            auxData.get().setIsbn(bookEntity.getIsbn());
             auxData.get().setPrice(bookEntity.getPrice());
             auxData.get().setQuantityInStock(bookEntity.getQuantityInStock());
             auxData.get().setAuthorEntity(bookEntity.getAuthorEntity());
