@@ -1,6 +1,7 @@
 package com.gattuso42.BookStoreAPI.exception;
 
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.validation.ConstraintViolationException;
 import jakarta.xml.bind.ValidationException;
 import org.springframework.beans.TypeMismatchException;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -30,6 +31,12 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     ResponseEntity<Object>EntityNotFoundExceptionHandler(EntityNotFoundException ex){
         CustomExceptionResponse error = new CustomExceptionResponse(List.of(ex.getLocalizedMessage()));
         return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(ConstraintViolationException.class)
+    ResponseEntity<Object>ConstraintViolationExceptionHandler(ConstraintViolationException ex){
+        CustomExceptionResponse error = new CustomExceptionResponse(List.of(ex.getLocalizedMessage()));
+        return new ResponseEntity<>(error,HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(ValidationException.class)

@@ -27,17 +27,17 @@ public class AuthorEntity {
     @Column(name = "author_pk_id")
     private Long id;
 
-    @NotNull(message = "Author name must not be blank")
+
     @NotBlank(message = "Author name must not be blank")
     @Size(max = 35,message = "Name must be up to 35 characters ")
-    @Pattern(regexp = "^[a-zA-Z0]*$",message = "Only letters are allowed")
+//  @Pattern(regexp = "^[a-zA-Z]*$",message = "Only letters are allowed")
     @Column(name = "author_name")
     private String name;
 
-    @NotNull(message = "Country must not be blank")
+
     @NotBlank(message = "Country must not be blank")
     @Size(max = 35,message = "Country must be up to 35 characters ")
-    @Pattern(regexp = "^[a-zA-Z0]*$",message = "Only letters are allowed")
+    @Pattern(regexp = "^[a-zA-Z]*$",message = "Only letters are allowed")
     @Column(name = "country")
     private String country;
 
