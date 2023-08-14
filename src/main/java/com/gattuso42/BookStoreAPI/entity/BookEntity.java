@@ -73,4 +73,7 @@ public class BookEntity {
             inverseJoinColumns = @JoinColumn(name = "genre_fk_id" ,referencedColumnName = "genre_pk_id")
     )
     Set<GenreEntity> genreEntities = new HashSet<>();
+
+
+
 }

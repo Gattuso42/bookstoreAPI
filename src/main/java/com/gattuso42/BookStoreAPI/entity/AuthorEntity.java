@@ -11,8 +11,6 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
-import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -27,14 +25,14 @@ public class AuthorEntity {
     @Column(name = "author_pk_id")
     private Long id;
 
-
+    @NotNull(message = "Author must not be null")
     @NotBlank(message = "Author name must not be blank")
     @Size(max = 35,message = "Name must be up to 35 characters ")
-//  @Pattern(regexp = "^[a-zA-Z]*$",message = "Only letters are allowed")
+    @Pattern(regexp = "^[a-zA-Z]*$",message = "Only letters are allowed")
     @Column(name = "author_name")
     private String name;
 
-
+    @NotNull(message = "Country must not be null")
     @NotBlank(message = "Country must not be blank")
     @Size(max = 35,message = "Country must be up to 35 characters ")
     @Pattern(regexp = "^[a-zA-Z]*$",message = "Only letters are allowed")
