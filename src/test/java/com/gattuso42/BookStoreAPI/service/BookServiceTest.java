@@ -113,8 +113,6 @@ public class BookServiceTest {
 //        Verifications
         verify(bookRepository,times(1)).findAll();
     }
-
-
     @Test
     public void getBookByIdSuccessful(){
 //        Samples
@@ -170,7 +168,6 @@ public class BookServiceTest {
         verify(bookRepository).findBookEntityById(5L);
         verify(bookRepository,never()).save(bookEntity);
     }
-
     @Test
     public void getBookByTitleSuccessful(){
 //        Samples
@@ -219,8 +216,6 @@ public class BookServiceTest {
 //        Verifications
         verify(bookRepository).findByTitleContaining("Sherlock");
     }
-
-
     @Test
     public void saveBookSuccessful(){
 //        Samples
@@ -241,8 +236,6 @@ public class BookServiceTest {
         book1.setIsbn("000000000000");
         book1.setPrice(50.0);
         book1.setQuantityInStock(4);
-
-
 //        Mock
 //        Perform
         bookService.saveBook(book1,author1.getName(),author1.getCountry(),Set.of(genre1.getName()));
@@ -256,35 +249,119 @@ public class BookServiceTest {
     }
     @Test
     public void saveBookUnsuccessful(){
-//        Samples
-//        Mock
-//        Perform
-//        Assertions
-//        Verifications
     }
-
     @Test
     public void updateBookSuccessful(){
 //        Samples
+        AuthorEntity author1 = new AuthorEntity();
+        author1.setId(1L);
+        author1.setName("Arthur Conan Doyle");
+        author1.setCountry("England");
+
+        GenreEntity genre1 = new GenreEntity();
+        genre1.setId(1L);
+        genre1.setName("Detective");
+
+        BookEntity book1 = new BookEntity();
+        book1.setId(1L);
+        book1.setTitle("Sherlock Holmes");
+        book1.setDescription("A good book for reading");
+        book1.setPublishedDay(LocalDate.parse("1850-04-05"));
+        book1.setIsbn("000000000000");
+        book1.setPrice(50.0);
+        book1.setQuantityInStock(4);
 //        Mock
+        when(bookRepository.findBookEntityById(1L)).thenReturn(Optional.of(book1));
 //        Perform
+        bookService.updateBook(book1,author1.getName(),author1.getCountry(),Set.of(genre1.getName()),1L);
 //        Assertions
 //        Verifications
+        verify(bookRepository).save(book1);
+        verify(bookRepository).findBookEntityById(1L);
+        verify(authorRepository).save(any());
+        verify(authorRepository).findByNameIgnoreCase(any());
+        verify(authorRepository).save(any());
+        verify(genreRepository).findByNameIgnoreCase(any());
     }
     @Test
     public void updateBookUnsuccessful(){
 //        Samples
+        AuthorEntity author1 = new AuthorEntity();
+        author1.setId(1L);
+        author1.setName("Arthur Conan Doyle");
+        author1.setCountry("England");
+
+        GenreEntity genre1 = new GenreEntity();
+        genre1.setId(1L);
+        genre1.setName("Detective");
+
+        BookEntity book1 = new BookEntity();
+        book1.setId(1L);
+        book1.setTitle("Sherlock Holmes");
+        book1.setDescription("A good book for reading");
+        book1.setPublishedDay(LocalDate.parse("1850-04-05"));
+        book1.setIsbn("000000000000");
+        book1.setPrice(50.0);
+        book1.setQuantityInStock(4);
 //        Mock
+        when(bookRepository.findBookEntityById(1L)).thenReturn(Optional.empty());
 //        Perform
+        try{
+            bookService.updateBook(book1,author1.getName(),author1.getCountry(),Set.of(genre1.getName()),1L);
+        }
+        catch (Exception ignored){
+        }
 //        Assertions
 //        Verifications
+        verify(bookRepository).findBookEntityById(1L);
+        verify(authorRepository,never()).findByNameIgnoreCase(any());
+        verify(genreRepository,never()).findByNameIgnoreCase(any());
     }
-
-
     @Test
-    public void deletedBookSuccessful(){}
+    public void deletedBookSuccessful(){
+//        Samples
+        AuthorEntity author1 = new AuthorEntity();
+        author1.setId(1L);
+        author1.setName("Arthur Conan Doyle");
+        author1.setCountry("England");
+
+        GenreEntity genre1 = new GenreEntity();
+        genre1.setId(1L);
+        genre1.setName("Detective");
+
+        BookEntity book1 = new BookEntity();
+        book1.setId(1L);
+        book1.setTitle("Sherlock Holmes");
+        book1.setDescription("A good book for reading");
+        book1.setPublishedDay(LocalDate.parse("1850-04-05"));
+        book1.setIsbn("000000000000");
+        book1.setPrice(50.0);
+        book1.setQuantityInStock(4);
+//        Mock
+        when(bookRepository.findBookEntityById(1L)).thenReturn(Optional.of(book1));
+//        Perform
+        bookService.deleteBookById(1L);
+//        Assertions
+//        Verifications
+        verify(bookRepository).findBookEntityById(1L);
+        verify(bookRepository).deleteById(1L);
+    }
     @Test
-    public void deletedBookUnsuccessful(){}
+    public void deletedBookUnsuccessful(){
+//        Samples
+//        Mock
+        when(bookRepository.findBookEntityById(1L)).thenReturn(Optional.empty());
+//        Perform
+        try{
+            bookService.deleteBookById(1L);
+        }
+        catch(Exception ignored){
+        }
+//        Assertions
+//        Verifications
+        verify(bookRepository).findBookEntityById(1L);
+        verify(bookRepository,never()).deleteById(1L);
+    }
 
 
 }
