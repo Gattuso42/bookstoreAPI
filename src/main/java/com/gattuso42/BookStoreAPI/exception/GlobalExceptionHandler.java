@@ -30,7 +30,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler(EntityNotFoundException.class)
     ResponseEntity<Object>EntityNotFoundExceptionHandler(EntityNotFoundException ex){
         CustomExceptionResponse error = new CustomExceptionResponse(List.of(ex.getLocalizedMessage()));
-        return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(error, HttpStatus.NOT_FOUND);
     }
 
     @ExceptionHandler(ConstraintViolationException.class)
