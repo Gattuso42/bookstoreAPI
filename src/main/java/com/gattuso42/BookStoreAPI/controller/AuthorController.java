@@ -62,7 +62,7 @@ public class AuthorController {
 
 //    Get all the books by author
     @GetMapping("/search-books-by-author/{id}")
-    ResponseEntity<Set<BookEntity>>getBooksByAuthor( @PathVariable Long id){
+    ResponseEntity<List<BookEntity>>getBooksByAuthor( @PathVariable Long id){
         return new ResponseEntity<>(authorService.getBooksByAuthor(id),HttpStatus.OK);
     }
 

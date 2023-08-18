@@ -62,7 +62,7 @@ public class AuthorServiceImpl implements AuthorService{
 
 //    Search Book by Author
     @Override
-    public Set<BookEntity> getBooksByAuthor(Long id) {
+    public List<BookEntity> getBooksByAuthor(Long id) {
         Optional<AuthorEntity>auxData = authorRepository.findAuthorEntityById(id);
         if(auxData.isEmpty())throw new EntityNotFoundException("The Author with this id is not found");
         else return auxData.get().getBookEntities();

@@ -10,8 +10,8 @@ public interface BookService {
 
      List<BookEntity> getAllBooks();
      BookEntity getBookById(Long id);
-     void saveBook(BookEntity bookEntity,String authorName,String country,Set<String> genreName);
-     void updateBook(BookEntity bookEntity,String authorName,String country,Set<String> genreName,Long id);
+     void saveBook(BookEntity bookEntity,String authorName,String country,List<String> genreName);
+     void updateBook(BookEntity bookEntity,String authorName,String country,List<String> genreName,Long id);
      void deleteBookById(Long id);
 
 //    Searching Methods*****************

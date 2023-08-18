@@ -61,7 +61,7 @@ public class BookServiceTest {
         book1.setPrice(50.0);
         book1.setQuantityInStock(4);
         book1.setAuthorEntity(author1);
-        book1.setGenreEntities(Set.of(genre1));
+        book1.setGenreEntities(List.of(genre1));
 
         BookEntity book2 = new BookEntity();
         book2.setTitle("Title2");
@@ -134,7 +134,7 @@ public class BookServiceTest {
         book1.setPrice(50.0);
         book1.setQuantityInStock(4);
         book1.setAuthorEntity(author1);
-        book1.setGenreEntities(Set.of(genre1));
+        book1.setGenreEntities(List.of(genre1));
 //        Mock
         when(bookRepository.findBookEntityById(1L)).thenReturn(Optional.of(book1));
 //        Perform
@@ -189,7 +189,7 @@ public class BookServiceTest {
         book1.setPrice(50.0);
         book1.setQuantityInStock(4);
         book1.setAuthorEntity(author1);
-        book1.setGenreEntities(Set.of(genre1));
+        book1.setGenreEntities(List.of(genre1));
 //        Mock
         when(bookRepository.findByTitleContaining("Sherlock")).thenReturn(List.of(book1));
 //        Perform
@@ -238,7 +238,7 @@ public class BookServiceTest {
         book1.setQuantityInStock(4);
 //        Mock
 //        Perform
-        bookService.saveBook(book1,author1.getName(),author1.getCountry(),Set.of(genre1.getName()));
+        bookService.saveBook(book1,author1.getName(),author1.getCountry(),List.of(genre1.getName()));
 //        Assertions
 //        Verifications
         verify(bookRepository).save(book1);
@@ -273,7 +273,7 @@ public class BookServiceTest {
 //        Mock
         when(bookRepository.findBookEntityById(1L)).thenReturn(Optional.of(book1));
 //        Perform
-        bookService.updateBook(book1,author1.getName(),author1.getCountry(),Set.of(genre1.getName()),1L);
+        bookService.updateBook(book1,author1.getName(),author1.getCountry(),List.of(genre1.getName()),1L);
 //        Assertions
 //        Verifications
         verify(bookRepository).save(book1);
@@ -307,7 +307,7 @@ public class BookServiceTest {
         when(bookRepository.findBookEntityById(1L)).thenReturn(Optional.empty());
 //        Perform
         try{
-            bookService.updateBook(book1,author1.getName(),author1.getCountry(),Set.of(genre1.getName()),1L);
+            bookService.updateBook(book1,author1.getName(),author1.getCountry(),List.of(genre1.getName()),1L);
         }
         catch (Exception ignored){
         }

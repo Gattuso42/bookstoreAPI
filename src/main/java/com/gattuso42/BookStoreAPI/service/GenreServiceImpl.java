@@ -57,13 +57,13 @@ public class GenreServiceImpl implements GenreService {
 
 //    Search Genre by name
     @Override
-    public Set<GenreEntity> getGenreByName(String name) {
+    public List<GenreEntity> getGenreByName(String name) {
         return genreRepository.findByNameContaining(name);
     }
 
 //    Search Books by Genre
     @Override
-    public Set<BookEntity> getBooksByGenre(Long id) {
+    public List<BookEntity> getBooksByGenre(Long id) {
         Optional<GenreEntity>auxData = genreRepository.findGenreEntityById(id);
         if(auxData.isEmpty())throw new EntityNotFoundException("The Genre with this id is not found");
         else return auxData.get().getBookEntities();

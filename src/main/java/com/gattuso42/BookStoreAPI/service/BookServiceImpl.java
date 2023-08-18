@@ -35,7 +35,7 @@ public class BookServiceImpl implements BookService{
     }
 
     @Override
-    public void saveBook(BookEntity bookEntity,String authorName,String country,Set<String> genreName) {
+    public void saveBook(BookEntity bookEntity,String authorName,String country,List<String> genreName) {
         for(String aux:genreName){
             Optional<GenreEntity>genreAuxData = genreRepository.findByNameIgnoreCase(aux);
             if(genreAuxData.isEmpty()){
@@ -64,7 +64,7 @@ public class BookServiceImpl implements BookService{
     }
 
     @Override
-    public void updateBook(BookEntity bookEntity,String authorName,String country,Set<String> genreName, Long id) {
+    public void updateBook(BookEntity bookEntity,String authorName,String country,List<String> genreName, Long id) {
         Optional<BookEntity> auxData = bookRepository.findBookEntityById(id);
 //        Process similar to save
         if(auxData.isEmpty()) throw new EntityNotFoundException("The Book with this id is not found");

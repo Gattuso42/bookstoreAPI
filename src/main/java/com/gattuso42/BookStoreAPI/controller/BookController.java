@@ -33,15 +33,15 @@ public class BookController {
 
 //    Save a Book
     @PostMapping()
-    ResponseEntity<BookEntity>saveBook(@Valid @RequestBody BookEntity bookEntity,@Valid @RequestParam String authorName,@Valid @RequestParam String authorCountry,@Valid @RequestParam Set<String> genreName){
+    ResponseEntity<BookEntity>saveBook(@Valid @RequestBody BookEntity bookEntity,@Valid @RequestParam String authorName,@Valid @RequestParam String authorCountry,@Valid @RequestParam List<String> genreName){
         bookService.saveBook(bookEntity,authorName,authorCountry,genreName);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
 //    Upgrade a Book
     @PutMapping("/{id}")
-    ResponseEntity<BookEntity>upgradeBook(@RequestBody BookEntity bookEntity,@PathVariable Long id,@RequestParam String authorName,@RequestParam String authorCountry,@RequestParam Set<String> genreName){
-        bookService.updateBook(bookEntity,authorName,authorCountry,genreName,id);
+    ResponseEntity<BookEntity>upgradeBook(@RequestBody BookEntity bookEntity,@PathVariable Long id,@RequestParam String authorName,@RequestParam String authorCountry,@RequestParam List<String> genreName){
+        bookService.updateBook(bookEntity,authorName,authorCountry, genreName,id);
         return new ResponseEntity<>(HttpStatus.ACCEPTED);
     }
 

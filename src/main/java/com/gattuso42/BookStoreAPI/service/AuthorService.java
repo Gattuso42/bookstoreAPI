@@ -20,5 +20,5 @@ public interface AuthorService {
      List<AuthorEntity> getAuthorByName(String name);
 
 //   Search Books by Author
-     Set<BookEntity> getBooksByAuthor(Long id);
+     List<BookEntity> getBooksByAuthor(Long id);
 }

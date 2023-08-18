@@ -85,12 +85,12 @@ public class AuthorServiceTest {
         book1.setQuantityInStock(4);
         book1.setAuthorEntity(author1);
 
-        author1.setBookEntities(Set.of(book1));
+        author1.setBookEntities(List.of(book1));
 //        Mock
         when(authorRepository.findAuthorEntityById(1L)).thenReturn(Optional.of(author1));
 //        Perform
         AuthorEntity authorSample = authorService.getAuthorById(1L);
-        List<BookEntity>bookEntities = new ArrayList<>(authorSample.getBookEntities());
+        List<BookEntity>bookEntities = authorSample.getBookEntities();
 
 //        Assertions
         assertEquals("Arthur Conan Doyle",authorSample.getName());
@@ -137,12 +137,12 @@ public class AuthorServiceTest {
         book1.setQuantityInStock(4);
         book1.setAuthorEntity(author1);
 
-        author1.setBookEntities(Set.of(book1));
+        author1.setBookEntities(List.of(book1));
 //        Mock
         when(authorRepository.findByNameContaining("Sherlock")).thenReturn(List.of(author1));
 //        Perform
         List<AuthorEntity>authorSample = authorService.getAuthorByName("Sherlock");
-        List<BookEntity>bookEntities = new ArrayList<>(authorSample.get(0).getBookEntities());// Conversion Set -> List
+        List<BookEntity>bookEntities = authorSample.get(0).getBookEntities();
 //        Assertions
         assertEquals("Arthur Conan Doyle",authorSample.get(0).getName());
         assertEquals("England",authorSample.get(0).getCountry());
@@ -186,7 +186,7 @@ public class AuthorServiceTest {
         book1.setQuantityInStock(4);
         book1.setAuthorEntity(author1);
 
-        author1.setBookEntities(Set.of(book1));
+        author1.setBookEntities(List.of(book1));
 //        Mock
         when(authorRepository.findAuthorEntityById(1L)).thenReturn(Optional.of(author1));
 //        Perform

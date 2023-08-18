@@ -57,13 +57,13 @@ public class GenreController {
 
 //    Search Genre by name
     @GetMapping("/search/name")
-    ResponseEntity<Set<GenreEntity>>getGenreByName(@Valid @RequestParam String name){
+    ResponseEntity<List<GenreEntity>>getGenreByName(@Valid @RequestParam String name){
         return new ResponseEntity<>(genreService.getGenreByName(name),HttpStatus.OK);
     }
 
 //    Search books by Genre
     @GetMapping("/search-books-by-genre/{id}")
-    ResponseEntity<Set<BookEntity>>getBooksByGenre(@PathVariable Long id){
+    ResponseEntity<List<BookEntity>>getBooksByGenre(@PathVariable Long id){
         return new ResponseEntity<>(genreService.getBooksByGenre(id),HttpStatus.OK);
     }
 

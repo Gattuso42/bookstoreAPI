@@ -9,7 +9,9 @@ import org.hibernate.validator.constraints.ISBN;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -72,7 +74,7 @@ public class BookEntity {
             joinColumns = @JoinColumn(name = "book_fk_id",referencedColumnName = "book_pk_id" ),
             inverseJoinColumns = @JoinColumn(name = "genre_fk_id" ,referencedColumnName = "genre_pk_id")
     )
-    Set<GenreEntity> genreEntities = new HashSet<>();
+   List<GenreEntity> genreEntities=new ArrayList<>();
 
 
 

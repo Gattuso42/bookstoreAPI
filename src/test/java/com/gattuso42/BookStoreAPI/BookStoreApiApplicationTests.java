@@ -1,9 +1,9 @@
 package com.gattuso42.BookStoreAPI;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.gattuso42.BookStoreAPI.entity.AuthorEntity;
-import com.gattuso42.BookStoreAPI.repository.AuthorRepository;
-import org.junit.Before;
+import com.gattuso42.BookStoreAPI.entity.BookEntity;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,12 +16,11 @@ import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.RequestBuilder;
-import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import static net.bytebuddy.matcher.ElementMatchers.isArray;
+import java.time.LocalDate;
+
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -40,9 +39,9 @@ class BookStoreApiApplicationTests {
    private ObjectMapper objectMapper;
 
 //    Base URLs
-    private static final String BASE_URL_BOOK = "/bookstoreapi/book/";
-    private static final String BASE_URL_AUTHOR = "/bookstoreapi/author/";
-    private static final String BASE_URL_GENRE = "/bookstoreapi/genre/";
+    private static final String BASE_BOOK_URL = "/bookstoreapi/book/";
+    private static final String BASE_AUTHOR_URL = "/bookstoreapi/author/";
+    private static final String BASE_GENRE_URL = "/bookstoreapi/genre/";
 
 
 
@@ -52,9 +51,9 @@ class BookStoreApiApplicationTests {
     @Sql(executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD,scripts = "/sql-scripts.sql")
     public void shouldGetAllEntitiesSuccessful() throws Exception {
 //        Samples
-        RequestBuilder getAllAuthorUrl = MockMvcRequestBuilders.get(BASE_URL_AUTHOR+"all");
-        RequestBuilder getAllGenreUrl = MockMvcRequestBuilders.get(BASE_URL_GENRE+"all");
-        RequestBuilder getAllBookUrl = MockMvcRequestBuilders.get(BASE_URL_BOOK+"all");
+        RequestBuilder getAllAuthorUrl = MockMvcRequestBuilders.get(BASE_AUTHOR_URL +"all");
+        RequestBuilder getAllGenreUrl = MockMvcRequestBuilders.get(BASE_GENRE_URL +"all");
+        RequestBuilder getAllBookUrl = MockMvcRequestBuilders.get(BASE_BOOK_URL +"all");
 //        Perform
         mockMvc.perform(getAllAuthorUrl)
                 .andExpect(status().is2xxSuccessful())
@@ -101,9 +100,9 @@ class BookStoreApiApplicationTests {
     @Test
     public void shouldGetAllEntitiesEmpty() throws Exception {
 //        Samples
-        RequestBuilder getAllAuthorsUrl = MockMvcRequestBuilders.get(BASE_URL_AUTHOR+"all");
-        RequestBuilder getAllGenreUrl = MockMvcRequestBuilders.get(BASE_URL_GENRE+"all");
-        RequestBuilder getAllBooksUrl = MockMvcRequestBuilders.get(BASE_URL_BOOK+"all");
+        RequestBuilder getAllAuthorsUrl = MockMvcRequestBuilders.get(BASE_AUTHOR_URL +"all");
+        RequestBuilder getAllGenreUrl = MockMvcRequestBuilders.get(BASE_GENRE_URL +"all");
+        RequestBuilder getAllBooksUrl = MockMvcRequestBuilders.get(BASE_BOOK_URL +"all");
 //        Perform
         mockMvc.perform(getAllAuthorsUrl)
                 .andExpect(status().is2xxSuccessful())
@@ -134,9 +133,9 @@ class BookStoreApiApplicationTests {
     public void shouldGetOneEntityByIdSuccessful() throws Exception {
 //        Samples
 //        Urls
-        RequestBuilder getBookByIdUrl = MockMvcRequestBuilders.get(BASE_URL_BOOK+"1");
-        RequestBuilder getAuthorByIdUrl = MockMvcRequestBuilders.get(BASE_URL_AUTHOR+"1");
-        RequestBuilder getGenreByIdUrl = MockMvcRequestBuilders.get(BASE_URL_GENRE+"1");
+        RequestBuilder getBookByIdUrl = MockMvcRequestBuilders.get(BASE_BOOK_URL +"1");
+        RequestBuilder getAuthorByIdUrl = MockMvcRequestBuilders.get(BASE_AUTHOR_URL +"1");
+        RequestBuilder getGenreByIdUrl = MockMvcRequestBuilders.get(BASE_GENRE_URL +"1");
 //        Perform
 
         mockMvc.perform(getBookByIdUrl)
@@ -171,9 +170,9 @@ class BookStoreApiApplicationTests {
     public void shouldGetOneEntityUnsuccessful() throws Exception {
 //        Samples
 //        Urls
-        RequestBuilder getBookByIdUrl = MockMvcRequestBuilders.get(BASE_URL_BOOK+"4");
-        RequestBuilder getAuthorByIdUrl = MockMvcRequestBuilders.get(BASE_URL_AUTHOR+"error");
-        RequestBuilder getGenreByIdUrl = MockMvcRequestBuilders.get(BASE_URL_GENRE+"4");
+        RequestBuilder getBookByIdUrl = MockMvcRequestBuilders.get(BASE_BOOK_URL +"4");
+        RequestBuilder getAuthorByIdUrl = MockMvcRequestBuilders.get(BASE_AUTHOR_URL +"error");
+        RequestBuilder getGenreByIdUrl = MockMvcRequestBuilders.get(BASE_GENRE_URL +"4");
 //        Perform
         mockMvc.perform(getBookByIdUrl)
                 .andExpect(status().isNotFound())
@@ -194,11 +193,11 @@ class BookStoreApiApplicationTests {
     public void shouldGetEntitiesByNameOrTitleSuccessful() throws Exception {
 //        Samples
 //        Urls
-        RequestBuilder getBookByTitleUrl = MockMvcRequestBuilders.get(BASE_URL_BOOK+"search/title")
+        RequestBuilder getBookByTitleUrl = MockMvcRequestBuilders.get(BASE_BOOK_URL +"search/title")
                 .queryParam("title","Title2");
-        RequestBuilder getAuthorByNameUrl = MockMvcRequestBuilders.get(BASE_URL_AUTHOR+"search/name")
+        RequestBuilder getAuthorByNameUrl = MockMvcRequestBuilders.get(BASE_AUTHOR_URL +"search/name")
                 .queryParam("name","AuthorY");
-        RequestBuilder getGenreByNameUrl = MockMvcRequestBuilders.get(BASE_URL_GENRE+"search/name")
+        RequestBuilder getGenreByNameUrl = MockMvcRequestBuilders.get(BASE_GENRE_URL +"search/name")
                 .queryParam("name","Detective");
 //        Perform
         mockMvc.perform(getBookByTitleUrl)
@@ -235,11 +234,11 @@ class BookStoreApiApplicationTests {
     public void shouldGetEntitiesByNameOrTitleUnsuccessful() throws Exception{
 //        Samples
 //        URLs
-        RequestBuilder getBookByTitleUrl = MockMvcRequestBuilders.get(BASE_URL_BOOK+"search/title")
+        RequestBuilder getBookByTitleUrl = MockMvcRequestBuilders.get(BASE_BOOK_URL +"search/title")
                 .queryParam("title","true");
-        RequestBuilder getAuthorByNameUrl = MockMvcRequestBuilders.get(BASE_URL_AUTHOR+"search/name")
+        RequestBuilder getAuthorByNameUrl = MockMvcRequestBuilders.get(BASE_AUTHOR_URL +"search/name")
                 .queryParam("name","false");
-        RequestBuilder getGenreByNameUrl = MockMvcRequestBuilders.get(BASE_URL_GENRE+"search/name")
+        RequestBuilder getGenreByNameUrl = MockMvcRequestBuilders.get(BASE_GENRE_URL +"search/name")
                 .queryParam("name","Z");
 //        Perform
         mockMvc.perform(getBookByTitleUrl)
@@ -268,8 +267,8 @@ class BookStoreApiApplicationTests {
     public void shouldGetBooksByAuthorOrGenreSuccessful() throws Exception{
 //        Samples
 //        URLs
-        RequestBuilder getBooksByAuthorUrl = MockMvcRequestBuilders.get(BASE_URL_AUTHOR+"search-books-by-author/1");
-        RequestBuilder getBooksByGenreUrl = MockMvcRequestBuilders.get(BASE_URL_GENRE+"search-books-by-genre/1");
+        RequestBuilder getBooksByAuthorUrl = MockMvcRequestBuilders.get(BASE_AUTHOR_URL +"search-books-by-author/1");
+        RequestBuilder getBooksByGenreUrl = MockMvcRequestBuilders.get(BASE_GENRE_URL +"search-books-by-genre/1");
 //        Perform
         mockMvc.perform(getBooksByAuthorUrl)
                 .andExpect(status().isOk())
@@ -306,6 +305,80 @@ class BookStoreApiApplicationTests {
                 .andExpect(jsonPath("$.[1].publishedDay").value("1850-04-05"))
                 .andDo(print());
 
+    }
+
+    @Test
+    @Sql(executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD,scripts = "/sql-scripts.sql")
+    public void shouldGetBooksByAuthorOrGenreUnsuccessful() throws Exception{
+//        Samples
+//        URLs
+        RequestBuilder getBooksByAuthorUrl1 = MockMvcRequestBuilders.get(BASE_AUTHOR_URL +"search-books-by-author/40");
+        RequestBuilder getBooksByGenreUrl1 = MockMvcRequestBuilders.get(BASE_GENRE_URL +"search-books-by-genre/40");
+        RequestBuilder getBooksByAuthorUrl2 = MockMvcRequestBuilders.get(BASE_AUTHOR_URL +"search-books-by-author/true");
+        RequestBuilder getBooksByGenreUrl2 = MockMvcRequestBuilders.get(BASE_GENRE_URL +"search-books-by-genre/true");
+        RequestBuilder getBooksByAuthorUrl3 = MockMvcRequestBuilders.get(BASE_AUTHOR_URL +"search-books-by-author/3");
+        RequestBuilder getBooksByGenreUrl3 = MockMvcRequestBuilders.get(BASE_GENRE_URL +"search-books-by-genre/3");
+//        Perform
+        mockMvc.perform(getBooksByAuthorUrl1)
+                .andExpect(status().isNotFound())
+                .andDo(print());
+        mockMvc.perform(getBooksByAuthorUrl2)
+                .andExpect(status().isBadRequest())
+                .andDo(print());
+        mockMvc.perform(getBooksByAuthorUrl3)
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$").isArray())
+                .andExpect(jsonPath("$").isEmpty())
+                .andDo(print());
+
+        mockMvc.perform(getBooksByGenreUrl1)
+                .andExpect(status().isNotFound())
+                .andDo(print());
+        mockMvc.perform(getBooksByGenreUrl2)
+                .andExpect(status().isBadRequest())
+                .andDo(print());
+        mockMvc.perform(getBooksByGenreUrl3)
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$").isArray())
+                .andExpect(jsonPath("$").isEmpty())
+                .andDo(print());
+
+    }
+
+//    Save Entities
+    @Test
+//    @Sql(executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD,scripts = "/sql-scripts.sql")
+    public void shouldSaveEntitiesSuccessful() throws JsonProcessingException {
+//        Samples
+        AuthorEntity author1 = new AuthorEntity();
+        author1.setName("Arthur Conan Doyle");
+        author1.setCountry("England");
+
+        BookEntity book1 = new BookEntity();
+        book1.setTitle("Sherlock Holmes");
+        book1.setDescription("A good book for read");
+        book1.setPublishedDay(LocalDate.parse("1850-04-05"));
+        book1.setIsbn("000000000000");
+        book1.setPrice(50.0);
+        book1.setQuantityInStock(4);
+//        Urls
+        RequestBuilder postBook1 = MockMvcRequestBuilders.post(BASE_BOOK_URL)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(book1))
+                .queryParam("authorName","Title1")
+                .queryParam("authorCountry","England")
+                .queryParam("genreName","Detective");
+        RequestBuilder postBook2 = MockMvcRequestBuilders.post(BASE_BOOK_URL)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(book1))
+                .queryParam("authorName","Title5")
+                .queryParam("authorCountry","England")
+                .queryParam("genreName","Fiction");
+        RequestBuilder postAuthor = MockMvcRequestBuilders.post(BASE_BOOK_URL);
+        RequestBuilder postGenre = MockMvcRequestBuilders.post(BASE_BOOK_URL);
+//        Perform
     }
 
 }

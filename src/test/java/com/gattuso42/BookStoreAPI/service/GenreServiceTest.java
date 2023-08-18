@@ -106,7 +106,7 @@ public class GenreServiceTest {
         genre1.setId(1L);
         genre1.setName("Adventure");
 //        Mock
-        when(genreRepository.findByNameContaining("Adventure")).thenReturn(Set.of(genre1));
+        when(genreRepository.findByNameContaining("Adventure")).thenReturn(List.of(genre1));
 //        Perform
         List<GenreEntity>genreResult = new ArrayList<>(genreService.getGenreByName("Adventure"));
 //        Assertions
@@ -119,11 +119,11 @@ public class GenreServiceTest {
     public void getGenreByNameUnsuccessful(){
 //        Samples
 //        Mock
-        when(genreRepository.findByNameContaining("Adventure")).thenReturn(new HashSet<GenreEntity>());
+        when(genreRepository.findByNameContaining("Adventure")).thenReturn(new ArrayList<GenreEntity>());
 //        Perform
-        Set<GenreEntity> genreResult = genreService.getGenreByName("Adventure");
+        List<GenreEntity> genreResult = genreService.getGenreByName("Adventure");
 //        Assertions
-        assertEquals(new HashSet<GenreEntity>(),genreResult);
+        assertEquals(new ArrayList<GenreEntity>() , genreResult);
 //        Verifications
         verify(genreRepository).findByNameContaining("Adventure");
     }
@@ -142,9 +142,9 @@ public class GenreServiceTest {
         book1.setIsbn("000000000000");
         book1.setPrice(50.0);
         book1.setQuantityInStock(4);
-        book1.setGenreEntities(Set.of(genre1));
+        book1.setGenreEntities(List.of(genre1));
 
-        genre1.setBookEntities(Set.of(book1));
+        genre1.setBookEntities(List.of(book1));
 //        Mock
         when(genreRepository.findGenreEntityById(1L)).thenReturn(Optional.of(genre1));
 //        Perform

@@ -18,9 +18,9 @@ public interface GenreService {
 //    Searching Methods*******************
 
 //    Search Genre by name
-     Set<GenreEntity>getGenreByName(String name);
+     List<GenreEntity>getGenreByName(String name);
 
 //    Search Books by
-     Set<BookEntity>getBooksByGenre(Long id);
+     List<BookEntity>getBooksByGenre(Long id);
 
 }

@@ -12,6 +12,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.awt.print.Book;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -40,5 +41,5 @@ public class GenreEntity {
             joinColumns = @JoinColumn(name = "genre_fk_id" ,referencedColumnName = "genre_pk_id"),
             inverseJoinColumns = @JoinColumn(name = "book_fk_id",referencedColumnName = "book_pk_id" )
     )
-    Set<BookEntity> bookEntities;
+    List<BookEntity> bookEntities;
 }

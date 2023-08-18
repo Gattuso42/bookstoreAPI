@@ -10,7 +10,7 @@ import java.util.Set;
 public interface GenreRepository extends CrudRepository<GenreEntity,Long> {
     Optional<GenreEntity>findGenreEntityById(Long id);
 
-    Set<GenreEntity> findByNameContaining(String name);
+    List<GenreEntity> findByNameContaining(String name);
 
     Optional<GenreEntity>findByNameIgnoreCase(String genreName);
 }
