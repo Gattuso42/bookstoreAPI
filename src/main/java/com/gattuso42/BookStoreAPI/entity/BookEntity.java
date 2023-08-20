@@ -54,7 +54,7 @@ public class BookEntity {
     private String isbn;
 
 
-    @Digits(integer = 10 ,fraction = 0,message = "Quantity must have up to 10 integer digits")
+    @Digits(integer = 8 ,fraction = 0,message = "Quantity must have up to 8 integer digits")
     @Column(name = "quantity_in_stock")
     private int quantityInStock;
 

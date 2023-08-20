@@ -30,7 +30,7 @@ public class GenreEntity {
     @NotNull(message = "Genre name must not be blank")
     @NotBlank(message = "Genre name must not be blank")
     @Size(max = 35,message = "Genre name must be up to 35 characters ")
-    @Pattern(regexp = "^[a-zA-Z]*$",message = "Only letters are allowed")
+    @Pattern(regexp = "^[a-zA-Z ]*$",message = "Only letters are allowed")
     @Column(name = "genre_name")
     private String name;
 

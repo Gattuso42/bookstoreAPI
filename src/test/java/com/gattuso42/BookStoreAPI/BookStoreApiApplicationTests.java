@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.gattuso42.BookStoreAPI.entity.AuthorEntity;
 import com.gattuso42.BookStoreAPI.entity.BookEntity;
+import com.gattuso42.BookStoreAPI.entity.GenreEntity;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -349,8 +350,8 @@ class BookStoreApiApplicationTests {
 
 //    Save Entities
     @Test
-//    @Sql(executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD,scripts = "/sql-scripts.sql")
-    public void shouldSaveEntitiesSuccessful() throws JsonProcessingException {
+    @Sql(executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD,scripts = "/sql-scripts.sql")
+    public void shouldSaveEntitiesSuccessful() throws Exception {
 //        Samples
         AuthorEntity author1 = new AuthorEntity();
         author1.setName("Arthur Conan Doyle");
@@ -360,25 +361,236 @@ class BookStoreApiApplicationTests {
         book1.setTitle("Sherlock Holmes");
         book1.setDescription("A good book for read");
         book1.setPublishedDay(LocalDate.parse("1850-04-05"));
-        book1.setIsbn("000000000000");
+        book1.setIsbn("0000000000000");
         book1.setPrice(50.0);
         book1.setQuantityInStock(4);
+
+        GenreEntity genre1 = new GenreEntity();
+        genre1.setName("Fantasy");
+
+
 //        Urls
-        RequestBuilder postBook1 = MockMvcRequestBuilders.post(BASE_BOOK_URL)
+        RequestBuilder postBook1 = MockMvcRequestBuilders.post("/bookstoreapi/book")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(book1))
-                .queryParam("authorName","Title1")
+                .queryParam("authorName","AuthorX")
                 .queryParam("authorCountry","England")
                 .queryParam("genreName","Detective");
-        RequestBuilder postBook2 = MockMvcRequestBuilders.post(BASE_BOOK_URL)
+        RequestBuilder postBook2 = MockMvcRequestBuilders.post("/bookstoreapi/book")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(book1))
-                .queryParam("authorName","Title5")
+                .queryParam("authorName","AuthorW")
                 .queryParam("authorCountry","England")
                 .queryParam("genreName","Fiction");
-        RequestBuilder postAuthor = MockMvcRequestBuilders.post(BASE_BOOK_URL);
-        RequestBuilder postGenre = MockMvcRequestBuilders.post(BASE_BOOK_URL);
+        RequestBuilder postAuthor = MockMvcRequestBuilders.post("/bookstoreapi/author")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(author1));
+        RequestBuilder postGenre = MockMvcRequestBuilders.post("/bookstoreapi/genre")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(genre1));
 //        Perform
+        mockMvc.perform(postBook1)
+                .andExpect(status().isCreated())
+                .andDo(print());
+        mockMvc.perform(postBook2)
+                .andExpect(status().isCreated())
+                .andDo(print());
+        mockMvc.perform(postAuthor)
+                .andExpect(status().isCreated())
+                .andDo(print());
+        mockMvc.perform(postGenre)
+                .andExpect(status().isCreated())
+                .andDo(print());
+    }
+
+    @Test
+    @Sql(executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD,scripts = "/sql-scripts.sql")
+    public void shouldSaveEntitiesUnsuccessful() throws Exception{
+//        Samples
+        AuthorEntity author1 = new AuthorEntity();//Not Blank
+        author1.setName("");
+        author1.setCountry("");
+
+        AuthorEntity author2 = new AuthorEntity();//Only letters allowed
+        author2.setName("Arthur Conan Doyle%@");
+        author2.setCountry("England@@");
+
+        AuthorEntity author3 = new AuthorEntity();//Size
+        author3.setName("Fffffffffffffffffffffffffffffffffffffffffffff");
+        author3.setCountry("Ffffffffffffffffffffffffffffffffffffffffff");
+
+
+        BookEntity book1 = new BookEntity();// Not Blank error
+        book1.setTitle("");
+        book1.setDescription("");
+        book1.setPublishedDay(LocalDate.parse("1850-04-05"));
+        book1.setIsbn("0000000000000");
+        book1.setPrice(50.0);
+        book1.setQuantityInStock(4);
+
+        BookEntity book2 = new BookEntity();// Only letters allowed
+        book2.setTitle("Sherlock Holmes%%%%");
+        book2.setDescription("A good book for%%%%% read");
+        book2.setPublishedDay(LocalDate.parse("1850-04-05"));
+        book2.setIsbn("0000000000000");
+        book2.setPrice(50.0);
+        book2.setQuantityInStock(4);
+
+        BookEntity book3 = new BookEntity();//Only Past date allowed
+        book3.setTitle("Sherlock Holmes");
+        book3.setDescription("A good book for read");
+        book3.setPublishedDay(LocalDate.parse("2024-04-05"));
+        book3.setIsbn("0000000000000");
+        book3.setPrice(50.0);
+        book3.setQuantityInStock(4);
+
+        BookEntity book4 = new BookEntity();// Isbn format incorrect
+        book4.setTitle("Sherlock Holmes");
+        book4.setDescription("A good book for read");
+        book4.setPublishedDay(LocalDate.parse("1850-04-05"));
+        book4.setIsbn("0");
+        book4.setPrice(50.0);
+        book4.setQuantityInStock(4);
+
+        BookEntity book5 = new BookEntity();// Stock digit limit
+        book5.setTitle("Sherlock Holmes");
+        book5.setDescription("A good book for read");
+        book5.setPublishedDay(LocalDate.parse("1850-04-05"));
+        book5.setIsbn("0000000000000");
+        book5.setPrice(50.0);
+        book5.setQuantityInStock(400000000);
+
+        BookEntity book6 = new BookEntity();// Validation params between entities
+        book6.setTitle("Sherlock Holmes");
+        book6.setDescription("A good book for read");
+        book6.setPublishedDay(LocalDate.parse("1850-04-05"));
+        book6.setIsbn("0000000000000");
+        book6.setPrice(50.0);
+        book6.setQuantityInStock(4);
+
+
+
+        GenreEntity genre1 = new GenreEntity();// Not blank
+        genre1.setName("");
+
+        GenreEntity genre2 = new GenreEntity();//Only letter allowed
+        genre2.setName("Fantasy@$1");
+
+        GenreEntity genre3 = new GenreEntity();//Size
+        genre3.setName("Fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff");
+//        Urls
+
+//        books
+        RequestBuilder postBook1 = MockMvcRequestBuilders.post("/bookstoreapi/book")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(book1))
+                .queryParam("authorName","Arthur Conan Doyle")
+                .queryParam("authorCountry","England")
+                .queryParam("genreName","Fiction");
+        RequestBuilder postBook2 = MockMvcRequestBuilders.post("/bookstoreapi/book")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(book2))
+                .queryParam("authorName","Jules Verne")
+                .queryParam("authorCountry","France")
+                .queryParam("genreName","Fiction");
+        RequestBuilder postBook3 = MockMvcRequestBuilders.post("/bookstoreapi/book")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(book3))
+                .queryParam("authorName","AuthorN")
+                .queryParam("authorCountry","Italy")
+                .queryParam("genreName","Detective");
+        RequestBuilder postBook4 = MockMvcRequestBuilders.post("/bookstoreapi/book")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(book4))
+                .queryParam("authorName","AuthorN")
+                .queryParam("authorCountry","Italy")
+                .queryParam("genreName","Detective");
+        RequestBuilder postBook5 = MockMvcRequestBuilders.post("/bookstoreapi/book")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(book5))
+                .queryParam("authorName","AuthorN")
+                .queryParam("authorCountry","Italy")
+                .queryParam("genreName","Detective");
+        RequestBuilder postBook6 = MockMvcRequestBuilders.post("/bookstoreapi/book")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(book6))
+                .queryParam("authorName","")
+                .queryParam("authorCountry","")
+                .queryParam("genreName","");
+//        authors
+        RequestBuilder postAuthor1 = MockMvcRequestBuilders.post("/bookstoreapi/author")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(author1));
+        RequestBuilder postAuthor2 = MockMvcRequestBuilders.post("/bookstoreapi/author")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(author2));
+        RequestBuilder postAuthor3 = MockMvcRequestBuilders.post("/bookstoreapi/author")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(author3));
+//        genre
+        RequestBuilder postGenre1 = MockMvcRequestBuilders.post("/bookstoreapi/genre")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(genre1));
+        RequestBuilder postGenre2 = MockMvcRequestBuilders.post("/bookstoreapi/genre")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(genre2));
+        RequestBuilder postGenre3 = MockMvcRequestBuilders.post("/bookstoreapi/genre")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(genre3));
+//        Perform
+
+        //books perform
+        mockMvc.perform(postBook1)
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$").isMap())
+                .andDo(print());
+        mockMvc.perform(postBook2)
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest())
+                .andDo(print());
+        mockMvc.perform(postBook3)
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest())
+                .andDo(print());
+        mockMvc.perform(postBook4)
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest())
+                .andDo(print());
+        mockMvc.perform(postBook5)
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest())
+                .andDo(print());
+        mockMvc.perform(postBook6)
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest())
+                .andDo(print());
+        //author perform
+        mockMvc.perform(postAuthor1)
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest())
+                .andDo(print());
+        mockMvc.perform(postAuthor2)
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest())
+                .andDo(print());
+        mockMvc.perform(postAuthor3)
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest())
+                .andDo(print());
+        //genre perform
+        mockMvc.perform(postGenre1)
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest())
+                .andDo(print());
+        mockMvc.perform(postGenre2)
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest())
+                .andDo(print());
+        mockMvc.perform(postGenre3)
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest())
+                .andDo(print());
     }
 
 }
