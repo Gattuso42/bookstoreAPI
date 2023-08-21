@@ -593,4 +593,176 @@ class BookStoreApiApplicationTests {
                 .andDo(print());
     }
 
+
+//  Upgrade Entities
+    @Test
+    @Sql(executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD,scripts = "/sql-scripts.sql")
+    public void UpgradeEntitiesSuccessful() throws Exception {
+//        Samples
+        AuthorEntity author1 = new AuthorEntity();
+        author1.setId(1L);
+        author1.setName("Arthur Conan Doyle");
+        author1.setCountry("England");
+
+        BookEntity book1 = new BookEntity();
+        book1.setId(1L);
+        book1.setTitle("Sherlock Holmes");
+        book1.setDescription("A good book for read");
+        book1.setPublishedDay(LocalDate.parse("1850-04-05"));
+        book1.setIsbn("0000000000000");
+        book1.setPrice(50.0);
+        book1.setQuantityInStock(4);
+
+        BookEntity book2 = new BookEntity();
+        book2.setId(2L);
+        book2.setTitle("Title4");
+        book2.setDescription("A good book for read");
+        book2.setPublishedDay(LocalDate.parse("1850-04-05"));
+        book2.setIsbn("0000000000000");
+        book2.setPrice(50.0);
+        book2.setQuantityInStock(4);
+
+        GenreEntity genre1 = new GenreEntity();
+        genre1.setName("Fiction");
+        genre1.setId(1L);
+//        Urls
+        RequestBuilder putBook1 = MockMvcRequestBuilders.put(BASE_BOOK_URL+"1")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(book1))
+                .queryParam("authorName","AuthorX")
+                .queryParam("authorCountry","England")
+                .queryParam("genreName","NewGenre");
+        RequestBuilder putBook2 = MockMvcRequestBuilders.put(BASE_BOOK_URL+"2")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(book2))
+                .queryParam("authorName","AuthorNew")
+                .queryParam("authorCountry","England")
+                .queryParam("genreName","Science");
+        RequestBuilder putAuthor = MockMvcRequestBuilders.put(BASE_AUTHOR_URL+"1")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(author1));
+        RequestBuilder putGenre = MockMvcRequestBuilders.put(BASE_GENRE_URL+"1")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(genre1));
+//        Perform
+        mockMvc.perform(putBook1)
+                .andExpect(status().isAccepted())
+                .andDo(print());
+        mockMvc.perform(putBook2)
+                .andExpect(status().isAccepted())
+                .andDo(print());
+        mockMvc.perform(putAuthor)
+                .andExpect(status().isAccepted())
+                .andDo(print());
+        mockMvc.perform(putGenre)
+                .andExpect(status().isAccepted())
+                .andDo(print());
+    }
+
+    @Test
+    @Sql(executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD,scripts = "/sql-scripts.sql")
+    public void UpgradeEntitiesUnsuccessful() throws Exception {
+//        Samples
+        AuthorEntity author1 = new AuthorEntity();
+        author1.setId(1L);
+        author1.setName("Arthur Conan Doyle");
+        author1.setCountry("England");
+
+        BookEntity book1 = new BookEntity();
+        book1.setId(1L);
+        book1.setTitle("Sherlock Holmes");
+        book1.setDescription("A good book for read");
+        book1.setPublishedDay(LocalDate.parse("1850-04-05"));
+        book1.setIsbn("0000000000000");
+        book1.setPrice(50.0);
+        book1.setQuantityInStock(4);
+
+        BookEntity book2 = new BookEntity();
+        book2.setId(2L);
+        book2.setTitle("Title4");
+        book2.setDescription("A good book for read");
+        book2.setPublishedDay(LocalDate.parse("1850-04-05"));
+        book2.setIsbn("0000000000000");
+        book2.setPrice(50.0);
+        book2.setQuantityInStock(4);
+
+        GenreEntity genre1 = new GenreEntity();
+        genre1.setName("Fiction");
+        genre1.setId(1L);
+//        Urls
+        RequestBuilder putBook1 = MockMvcRequestBuilders.put(BASE_BOOK_URL+"10")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(book1))
+                .queryParam("authorName","AuthorX")
+                .queryParam("authorCountry","England")
+                .queryParam("genreName","NewGenre");
+        RequestBuilder putBook2 = MockMvcRequestBuilders.put(BASE_BOOK_URL+"10")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(book2))
+                .queryParam("authorName","AuthorNew")
+                .queryParam("authorCountry","England")
+                .queryParam("genreName","Science");
+        RequestBuilder putAuthor = MockMvcRequestBuilders.put(BASE_AUTHOR_URL+"10")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(author1));
+        RequestBuilder putGenre = MockMvcRequestBuilders.put(BASE_GENRE_URL+"10")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(genre1));
+//        Perform
+        mockMvc.perform(putBook1)
+                .andExpect(status().isNotFound())
+                .andDo(print());
+        mockMvc.perform(putBook2)
+                .andExpect(status().isNotFound())
+                .andDo(print());
+        mockMvc.perform(putAuthor)
+                .andExpect(status().isNotFound())
+                .andDo(print());
+        mockMvc.perform(putGenre)
+                .andExpect(status().isNotFound())
+                .andDo(print());
+    }
+
+    @Test
+    @Sql(executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD,scripts = "/sql-scripts.sql")
+    public void DeletedEntitiesByIdSuccessful() throws Exception {
+//        Samples
+//        URls
+        RequestBuilder deletedBookById = MockMvcRequestBuilders.delete(BASE_BOOK_URL+"1");
+        RequestBuilder deletedAuthorById = MockMvcRequestBuilders.delete(BASE_AUTHOR_URL+"1");
+        RequestBuilder deletedGenreById = MockMvcRequestBuilders.delete(BASE_GENRE_URL+"1");
+//        Perform
+        mockMvc.perform(deletedBookById)
+                .andExpect(status().isAccepted())
+                .andDo(print());
+        mockMvc.perform(deletedAuthorById)
+                .andExpect(status().isAccepted())
+                .andDo(print());
+        mockMvc.perform(deletedGenreById)
+                .andExpect(status().isAccepted())
+                .andDo(print());
+    }
+
+    @Test
+    @Sql(executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD,scripts = "/sql-scripts.sql")
+    public void DeletedEntitiesByIdUnsuccessful() throws Exception {
+//        Samples
+//        URls
+        RequestBuilder deletedBookById = MockMvcRequestBuilders.delete(BASE_BOOK_URL+"10");
+        RequestBuilder deletedAuthorById = MockMvcRequestBuilders.delete(BASE_AUTHOR_URL+"10");
+        RequestBuilder deletedGenreById = MockMvcRequestBuilders.delete(BASE_GENRE_URL+"10");
+//        Perform
+        mockMvc.perform(deletedBookById)
+                .andExpect(status().isNotFound())
+                .andDo(print());
+        mockMvc.perform(deletedAuthorById)
+                .andExpect(status().isNotFound())
+                .andDo(print());
+        mockMvc.perform(deletedGenreById)
+                .andExpect(status().isNotFound())
+                .andDo(print());
+    }
+
+
+
 }
