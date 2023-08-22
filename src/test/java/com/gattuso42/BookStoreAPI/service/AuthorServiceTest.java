@@ -24,9 +24,9 @@ import static org.mockito.Mockito.*;
 @RunWith(MockitoJUnitRunner.class)
 public class AuthorServiceTest {
     @Mock
-    AuthorRepository authorRepository;
+    private AuthorRepository authorRepository;
     @InjectMocks
-    AuthorServiceImpl authorService;
+    private AuthorServiceImpl authorService;
 
     @Test
     public void getAllAuthorsSuccessful(){

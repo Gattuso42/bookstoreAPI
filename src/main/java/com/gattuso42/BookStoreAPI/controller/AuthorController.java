@@ -13,6 +13,7 @@ import java.util.List;
 import java.util.Set;
 
 @RestController
+@CrossOrigin(origins = "*")
 @RequestMapping("bookstoreapi/author")
 @AllArgsConstructor
 public class AuthorController {

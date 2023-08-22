@@ -21,9 +21,9 @@ import static org.mockito.Mockito.*;
 @RunWith(MockitoJUnitRunner.class)
 public class GenreServiceTest {
     @Mock
-    GenreRepository genreRepository;
+    private GenreRepository genreRepository;
     @InjectMocks
-    GenreServiceImpl genreService;
+    private GenreServiceImpl genreService;
 
 //Samples
 //    GenreEntity genre1 = new GenreEntity();

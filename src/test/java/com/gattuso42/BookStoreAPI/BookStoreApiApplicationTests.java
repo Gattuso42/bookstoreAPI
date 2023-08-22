@@ -37,7 +37,7 @@ class BookStoreApiApplicationTests {
     private MockMvc mockMvc;
 
     @Autowired
-   private ObjectMapper objectMapper;
+    private ObjectMapper objectMapper;
 
 //    Base URLs
     private static final String BASE_BOOK_URL = "/bookstoreapi/book/";
